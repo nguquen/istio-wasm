@@ -47,4 +47,7 @@ kubectl apply -f deployment.yaml
 7. Testing
 ```
 minikube tunnel
+curl http://localhost/world
+curl http://localhost/hello
+curl -H "token: secured" http://localhost/hello
 ```
