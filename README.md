@@ -34,3 +34,11 @@ docker build -t hello -f Dockerfile .
 kubectl apply -f deployment.yaml
 kubectl apply -f envoy-filter.yaml
 ```
+
+6. Build & deploy world service:
+```
+eval $(minikube docker-env)
+cd world
+docker build -t world -f Dockerfile .
+kubectl apply -f deployment.yaml
+```
