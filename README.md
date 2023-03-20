@@ -8,6 +8,7 @@ minikube start --memory 8192
 brew install istioctl
 istioctl install --set profile=demo -y
 kubectl label namespace default istio-injection=enabled
+kubectl apply -f gateway.yaml
 ```
 
 3. Build authz-filter:
@@ -41,4 +42,9 @@ eval $(minikube docker-env)
 cd world
 docker build -t world -f Dockerfile .
 kubectl apply -f deployment.yaml
+```
+
+7. Testing
+```
+minikube tunnel
 ```
