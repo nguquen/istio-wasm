@@ -1,0 +1,45 @@
+apiVersion: extensions.istio.io/v1alpha1
+kind: WasmPlugin
+metadata:
+  name: authz-filter
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: hello
+  url: file:///filters/authz_filter.wasm
+  phase: AUTHN
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: authz-filter
+  namespace: default
+spec:
+  workloadSelector:
+    # select by label in the same namespace
+    labels:
+      app: hello
+  configPatches:
+    # The Envoy config you want to modify
+    - applyTo: CLUSTER
+      match:
+        cluster:
+          service: "auth-grpc"
+      patch:
+        operation: ADD
+        value:
+          name: grpc_cluster
+          type: STRICT_DNS
+          connect_timeout: 10s
+          lb_policy: ROUND_ROBIN
+          http2_protocol_options: {}
+          load_assignment:
+            cluster_name: grpc_cluster
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: "auth-grpc.default.svc.cluster.local"
+                          port_value: 5005
