@@ -1,0 +1,25 @@
+[package]
+name = "authz-filter"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+proxy-wasm = "0.2.1"
+log = "0.4"
+chrono = "0.4"
+protobuf = "2"
+
+[build-dependencies]
+protoc-rust = "2.0"
+
+[profile.release]
+lto = true
+opt-level = 3
+codegen-units = 1
+panic = "abort"
+strip = "debuginfo"
