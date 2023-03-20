@@ -17,7 +17,15 @@ cd authz-filter
 cargo build --target wasm32-wasi --release
 ```
 
-4. Build & deploy hello service:
+4. Build & deploy auth-grpc service:
+```
+eval $(minikube docker-env)
+cd auth-grpc
+docker build -t auth-grpc -f Dockerfile .
+kubectl apply -f deployment.yaml
+```
+
+5. Build & deploy hello service:
 ```
 eval $(minikube docker-env)
 cd hello
